@@ -200,7 +200,7 @@ export default function ListaClientes() {
                   {clientesPaginados.map((cliente) => (
                     <tr key={cliente.id} className="hover:bg-gray-50">
                       <td className="px-4 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                        #{cliente.id.toString().padStart(4, "0")}
+                        {cliente.id.toString()}
                       </td>
                       <td className="px-4 py-4 whitespace-nowrap text-sm text-gray-900">
                         {cliente.negocio || "-"}
