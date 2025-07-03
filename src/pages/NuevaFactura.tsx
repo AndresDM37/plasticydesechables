@@ -242,11 +242,11 @@ function NuevaFactura() {
                     Factura de:
                   </h3>
                   <div className="text-sm text-gray-600 space-y-1">
-                    <p className="font-medium">Plasticos y Desechables</p>
-                    <p>79502454-2</p>
+                    <p className="font-medium">OP Plasticos y Desechables</p>
+                    <p>52081219-2</p>
                     <p>(57) 3133649085</p>
                     <p>Bogotá - Colombia</p>
-                    <p>distribuidorapava1@gmail.com</p>
+                    <p>opplasticosydesechables@gmail.com</p>
                   </div>
                 </div>
 
@@ -311,7 +311,7 @@ function NuevaFactura() {
                     <div className="text-sm text-gray-600 space-y-1 p-3 bg-gray-50 rounded-md">
                       <p className="font-medium">{cliente.negocio}</p>
                       <p>{cliente.cliente}</p>
-                      <p>CC: {cliente.id}</p>
+                      <p>ID: {cliente.identificacion}</p>
                       <p>Tel: {cliente.telefono}</p>
                       <p>{cliente.direccion}</p>
                     </div>

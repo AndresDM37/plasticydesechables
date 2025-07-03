@@ -73,7 +73,7 @@ function FacturaDetalle() {
               ref={componenteRef}
               className="print:shadow-none max-h-screen print:max-h-none overflow-auto print:overflow-visible"
             >
-              <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-2 lg:p-3 print:bg-orange-500 print:p-2">
+              <div className="bg-orange-500 print:bg-gradient-to-r print:from-orange-500 print:to-white p-2 lg:p-3 print:bg-orange-500 print:p-4">
                 <div className="flex justify-between items-center text-white">
                   <div className="flex items-center">
                     <div>
@@ -84,11 +84,20 @@ function FacturaDetalle() {
                       />
                     </div>
                   </div>
-                  <div className="text-right">
-                    <div className="text-lg lg:text-xl font-bold print:text-lg">
-                      No. Factura # {factura.id.toString().padStart(4, "0")}
+                  <div>
+                    <div className="text-md lg:text-sm text-gray-800 font-bold space-y-0.5 print:text-sm">
+                      <p className="font-medium">OP Plasticos y Desechables</p>
+                      <p>52081219-2</p>
+                      <p>(57) 3133649085</p>
+                      <p>Bogotá - Colombia</p>
+                      <p>opplasticosydesechables@gmail.com</p>
                     </div>
-                    <div className="text-orange-100 text-xs lg:text-sm print:text-xs">
+                  </div>
+                  <div className="text-right text-gray-800 font-bold">
+                    <div className="text-lg lg:text-xl font-bold print:text-lg">
+                      No. Remisión # {factura.id.toString().padStart(4, "0")}
+                    </div>
+                    <div className="text-xs lg:text-sm print:text-xs">
                       Fecha: {factura.fecha}
                     </div>
                   </div>
@@ -98,28 +107,14 @@ function FacturaDetalle() {
               {/* Contenido de la factura */}
               <div className="p-3 lg:p-4 print:p-3">
                 {/* Información de la empresa y cliente */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4 print:grid-cols-2 print:gap-4 print:mb-3">
-                  {/* Información de la empresa */}
-                  <div>
-                    <h3 className="font-semibold text-gray-800 mb-1 text-sm print:text-black print:text-xs">
-                      Factura de:
-                    </h3>
-                    <div className="text-xs text-gray-600 space-y-0.5 print:text-black print:text-[10px]">
-                      <p className="font-medium">Plasticos y Desechables</p>
-                      <p>79502454-2</p>
-                      <p>(57) 3133649085</p>
-                      <p>Bogotá - Colombia</p>
-                      <p>distribuidorapava1@gmail.com</p>
-                    </div>
-                  </div>
-
+                <div className="mb-4 print:grid-cols-2 print:gap-4 print:mb-3">
                   {/* Información del cliente */}
                   <div>
                     <h3 className="font-semibold text-gray-800 mb-1 text-sm print:text-black print:text-xs">
                       Factura para:
                     </h3>
                     <div className="text-xs text-gray-600 space-y-0.5 p-2 bg-gray-50 rounded-md print:bg-transparent print:p-0 print:text-black print:text-[10px]">
-                      <p className="font-medium">{factura.clientes.negocio}</p>
+                      Señores: <p className="font-medium">{factura.clientes.negocio}</p>
                       <p>{factura.clientes.cliente}</p>
                       <p>Tel: {factura.clientes.telefono}</p>
                       <p>{factura.clientes.direccion}</p>
@@ -136,6 +131,9 @@ function FacturaDetalle() {
                     <table className="w-full min-w-[500px] print:min-w-0">
                       <thead>
                         <tr className="bg-gray-800 text-white print:bg-gray-800 print:text-white">
+                          <th className="px-2 py-2 text-left font-medium text-xs print:text-[10px]">
+                            Ítem
+                          </th>
                           <th
                             className={`px-2 py-2 text-left font-medium ${
                               factura.items_factura.length > 15
@@ -188,6 +186,7 @@ function FacturaDetalle() {
                             key={i}
                             className="border-b border-gray-200 hover:bg-gray-50 print:hover:bg-transparent"
                           >
+                            <td className="px-2 py-2 text-sm print:text-[10px]">{i + 1}</td>
                             <td
                               className={`px-2 ${
                                 factura.items_factura.length > 15
