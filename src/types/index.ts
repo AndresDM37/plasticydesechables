@@ -17,13 +17,12 @@ export interface Producto {
 export interface ProductoFactura {
   id: number;
   descripcion: string;
-  precio: number; 
+  precio: number;
   precio_venta1: number;
   precio_venta2?: number;
   cantidad: number;
   subtotal: number;
 }
-
 
 export interface Factura {
   id: number;
@@ -42,6 +41,7 @@ export interface DetalleFactura {
   clientes: {
     cliente: string;
     negocio: string;
+    identificacion: string;
     direccion: string;
     telefono: string;
   };
@@ -54,4 +54,3 @@ export interface DetalleFactura {
     };
   }[];
 }
-

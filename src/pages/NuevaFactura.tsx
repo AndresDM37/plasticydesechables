@@ -363,7 +363,8 @@ function NuevaFactura() {
                             className="p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0"
                           >
                             <div className="font-medium text-sm">
-                              {prod.id} - {prod.descripcion} - ${(prod.precio_venta || 0).toLocaleString("es-CO")}
+                              {prod.id} - {prod.descripcion} - $
+                              {(prod.precio_venta || 0).toLocaleString("es-CO")}
                             </div>
                           </div>
                         ))}
@@ -520,22 +521,28 @@ function NuevaFactura() {
               </div>
 
               {/* Términos y Total */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 print:grid-cols-2 print:gap-4 mt-6 print:mt-4">
                 {/* Términos y Condiciones */}
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-2">
+                <div className="space-y-2">
+                  <h4 className="font-semibold text-gray-800 mb-2 text-sm print:text-black print:text-xs border-b border-gray-200 pb-1">
                     Términos & Condiciones
                   </h4>
-                  <div className="text-xs text-gray-600 space-y-1">
-                    <p>
-                      ESTE DOCUMENTO ES UNA NOTA COMERCIAL PARA EFECTOS DE USO
-                      INTERNO DEL CONTRIBUYENTE.
-                    </p>
-                    <p>
-                      LOS EFECTOS QUE EFECTOS SE USA DEBEN QUE EFECTOS SE USA
-                      DEBEN
-                    </p>
-                    <p>ESTAR TOTALMENTE LLENOS O VACIOS.</p>
+                  <div className="text-[10px] text-gray-600 leading-relaxed print:text-black print:text-[8px] print:leading-tight">
+                    <div className="bg-gray-50 p-3 rounded-md print:bg-transparent print:p-0 border-l-2 border-gray-300 print:border-l-0">
+                      <p className="text-justify">
+                        A ESTA FACTURA DE VENTA APLICAN LAS NORMAS RELATIVAS A
+                        LA LETRA DE CAMBIO (ARTÍCULO 5 LEY 1231 DE 2008). CON
+                        ESTA EL COMPRADOR DECLARA HABER RECIBIDO REAL Y
+                        MATERIALMENTE LAS MERCANCÍAS O PRESTACIÓN DE SERVICIOS
+                        DESCRITOS EN ESTE TÍTULO - VALOR.
+                      </p>
+                      <br />
+                      <p className="text-justify">
+                        NO RESPONSABLE DE IVA - ACTIVIDAD ECONÓMICA 4799 OTROS
+                        TIPOS DE COMERCIO AL POR MENOR NO REALIZADO EN
+                        ESTABLECIMIENTOS, PUESTOS DE VENTA O MERCADOS.
+                      </p>
+                    </div>
                   </div>
                 </div>
 

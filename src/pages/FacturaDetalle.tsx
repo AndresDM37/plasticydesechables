@@ -85,7 +85,7 @@ function FacturaDetalle() {
                     </div>
                   </div>
                   <div>
-                    <div className="text-md lg:text-sm text-gray-800 font-bold space-y-0.5 print:text-sm">
+                    <div className="text-md lg:text-sm print:text-gray-800 font-medium space-y-0.5 print:text-sm">
                       <p className="font-medium">OP Plasticos y Desechables</p>
                       <p>52081219-2</p>
                       <p>(57) 3133649085</p>
@@ -93,7 +93,7 @@ function FacturaDetalle() {
                       <p>opplasticosydesechables@gmail.com</p>
                     </div>
                   </div>
-                  <div className="text-right text-gray-800 font-bold">
+                  <div className="text-right print:text-gray-800 font-bold">
                     <div className="text-lg lg:text-xl font-bold print:text-lg">
                       No. Remisión # {factura.id.toString().padStart(4, "0")}
                     </div>
@@ -113,11 +113,44 @@ function FacturaDetalle() {
                     <h3 className="font-semibold text-gray-800 mb-1 text-sm print:text-black print:text-xs">
                       Factura para:
                     </h3>
-                    <div className="text-xs text-gray-600 space-y-0.5 p-2 bg-gray-50 rounded-md print:bg-transparent print:p-0 print:text-black print:text-[10px]">
-                      Señores: <p className="font-medium">{factura.clientes.negocio}</p>
-                      <p>{factura.clientes.cliente}</p>
-                      <p>Tel: {factura.clientes.telefono}</p>
-                      <p>{factura.clientes.direccion}</p>
+                    <div className="text-xs text-gray-600 p-2 bg-gray-50 rounded-md print:bg-transparent print:p-0 print:text-black print:text-[10px]">
+                      {/* Tabla de información del cliente */}
+                      <div className="grid grid-cols-2 gap-x-8 gap-y-1">
+                        <div className="flex">
+                          <span className="font-medium w-20">Señores</span>
+                          <span className="font-medium text-gray-900 print:text-black uppercase">
+                            {factura.clientes.negocio}
+                          </span>
+                        </div>
+
+                        <div className="flex">
+                          <span className="font-medium w-20">Teléfono</span>
+                          <span className="text-gray-900 print:text-black">
+                            {factura.clientes.telefono}
+                          </span>
+                        </div>
+
+                        <div className="flex">
+                          <span className="font-medium w-20">NIT</span>
+                          <span className="text-gray-900 print:text-black">
+                            {factura.clientes.identificacion}
+                          </span>
+                        </div>
+
+                        <div className="flex">
+                          <span className="font-medium w-20">Ciudad</span>
+                          <span className="text-gray-900 print:text-black">
+                            Bogotá - Colombia
+                          </span>
+                        </div>
+
+                        <div className="flex col-span-2">
+                          <span className="font-medium w-20">Dirección</span>
+                          <span className="text-gray-900 print:text-black">
+                            {factura.clientes.direccion}
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -186,7 +219,9 @@ function FacturaDetalle() {
                             key={i}
                             className="border-b border-gray-200 hover:bg-gray-50 print:hover:bg-transparent"
                           >
-                            <td className="px-2 py-2 text-sm print:text-[10px]">{i + 1}</td>
+                            <td className="px-2 py-2 text-sm print:text-[10px]">
+                              {i + 1}
+                            </td>
                             <td
                               className={`px-2 ${
                                 factura.items_factura.length > 15
@@ -239,45 +274,55 @@ function FacturaDetalle() {
                 </div>
 
                 {/* Términos y Total */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 print:grid-cols-2 print:gap-4">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 print:grid-cols-2 print:gap-4 mt-6 print:mt-4">
                   {/* Términos y Condiciones */}
-                  <div>
-                    <h4 className="font-semibold text-gray-800 mb-1 text-sm print:text-black print:text-xs">
+                  <div className="space-y-2">
+                    <h4 className="font-semibold text-gray-800 mb-2 text-sm print:text-black print:text-xs border-b border-gray-200 pb-1">
                       Términos & Condiciones
                     </h4>
-                    <div className="text-[10px] text-gray-600 space-y-0.5 print:text-black print:text-[8px]">
-                      <p>
-                        ESTE DOCUMENTO ES UNA NOTA COMERCIAL PARA EFECTOS DE USO
-                        INTERNO DEL CONTRIBUYENTE.
-                      </p>
-                      <p>
-                        LOS EFECTOS QUE EFECTOS SE USA DEBEN QUE EFECTOS SE USA
-                        DEBEN
-                      </p>
-                      <p>ESTAR TOTALMENTE LLENOS O VACIOS.</p>
+                    <div className="text-[10px] text-gray-600 leading-relaxed print:text-black print:text-[8px] print:leading-tight">
+                      <div className="bg-gray-50 p-3 rounded-md print:bg-transparent print:p-0 border-l-2 border-gray-300 print:border-l-0">
+                        <p className="text-justify">
+                          A ESTA FACTURA DE VENTA APLICAN LAS NORMAS RELATIVAS A
+                          LA LETRA DE CAMBIO (ARTÍCULO 5 LEY 1231 DE 2008). CON
+                          ESTA EL COMPRADOR DECLARA HABER RECIBIDO REAL Y
+                          MATERIALMENTE LAS MERCANCÍAS O PRESTACIÓN DE SERVICIOS
+                          DESCRITOS EN ESTE TÍTULO - VALOR.
+                        </p>
+                        <br />
+                        <p className="text-justify">
+                          NO RESPONSABLE DE IVA - ACTIVIDAD ECONÓMICA 4799 OTROS
+                          TIPOS DE COMERCIO AL POR MENOR NO REALIZADO EN
+                          ESTABLECIMIENTOS, PUESTOS DE VENTA O MERCADOS.
+                        </p>
+                      </div>
                     </div>
                   </div>
 
                   {/* Total */}
-                  <div className="text-right">
-                    <div className="bg-gray-800 text-white p-3 rounded-lg print:bg-gray-800 print:text-white print:rounded-none print:p-2">
-                      <div className="text-sm font-semibold mb-1 print:text-xs">
-                        TOTAL A PAGAR
+                  <div className="flex flex-col justify-start lg:justify-center">
+                    <div className="space-y-3">
+                      {/* Total Principal */}
+                      <div className="bg-gradient-to-r from-gray-800 to-gray-900 text-white p-4 rounded-lg print:bg-gray-800 print:text-white print:rounded-none print:p-3 shadow-lg print:shadow-none">
+                        <div className="text-center">
+                          <div className="text-xs font-medium mb-1 print:text-[10px] opacity-90">
+                            TOTAL A PAGAR
+                          </div>
+                          <div className="text-2xl font-bold print:text-xl tracking-wide">
+                            ${factura.total.toLocaleString("es-CO")}
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-xl font-bold print:text-lg">
-                        ${factura.total.toLocaleString("es-CO")}
+
+                      {/* Información adicional */}
+                      <div className="text-center text-xs text-gray-500 print:text-black print:text-[8px] mt-2">
+                        <p>!Gracias por su compra¡</p>
+                        <p className="font-medium">
+                          https://plasticosydesechables.vercel.app | (57)
+                          3133649085
+                        </p>
                       </div>
                     </div>
-                  </div>
-                </div>
-
-                {/* Información adicional para impresión */}
-                <div className="mt-4 pt-3 border-t border-gray-200 print:block print:mt-3 print:pt-2">
-                  <div className="text-center text-[10px] text-gray-500 print:text-black print:text-[8px]">
-                    <p>Gracias por su compra - Plasticos y Desechables</p>
-                    <p className="mt-0.5">
-                      www.plasticosydesechables.com | Tel: (57) 3133649085
-                    </p>
                   </div>
                 </div>
               </div>

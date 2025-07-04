@@ -24,6 +24,7 @@ export const obtenerFacturaConDetalle = async (facturaId: number) => {
       clientes (
         cliente,
         negocio,
+        identificacion,
         direccion,
         telefono
       ),
