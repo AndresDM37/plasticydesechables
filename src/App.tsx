@@ -1,4 +1,4 @@
-import { Route, BrowserRouter } from "react-router-dom";
+import { Route,Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import ListaProductos from "./pages/ListaProductos";
 import NuevaFactura from "./pages/NuevaFactura";
@@ -13,7 +13,7 @@ import RutaProtegida from "./components/RutaProtegida";
 
 function App() {
   return (
-    <BrowserRouter>
+    <Routes>
       <Route path="/registro" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/recuperar" element={<RecuperarContraseña />} />
@@ -66,7 +66,7 @@ function App() {
           </RutaProtegida>
         }
       />
-    </BrowserRouter>
+    </Routes>
   );
 }
 
