@@ -36,7 +36,11 @@ export const buscarClientes = async (texto: string) => {
   const { data, error } = await supabase
     .from("clientes")
     .select("*")
-    .or(`cliente.ilike.%${texto}%,negocio.ilike.%${texto}%,id.eq.${isNaN(Number(texto)) ? 0 : Number(texto)}`)
+    .or(
+      `cliente.ilike.%${texto}%,negocio.ilike.%${texto}%,id.eq.${
+        isNaN(Number(texto)) ? 0 : Number(texto)
+      }`
+    )
     .limit(10);
 
   if (error) {
@@ -67,7 +71,11 @@ export const buscarProductos = async (texto: string) => {
   const { data, error } = await supabase
     .from("productos")
     .select("*")
-    .or(`descripcion.ilike.%${texto}%,id.eq.${isNaN(Number(texto)) ? 0 : Number(texto)}`)
+    .or(
+      `descripcion.ilike.%${texto}%,id.eq.${
+        isNaN(Number(texto)) ? 0 : Number(texto)
+      }`
+    )
     .limit(10);
 
   if (error) {
@@ -86,7 +94,7 @@ export const guardarFacturaConHistorial = async (
   try {
     // 1. Insertar en `facturas`
     const { data: facturaData, error: facturaError } = await supabase
-      .from('facturas')
+      .from("facturas")
       .insert({
         cliente_id: cliente.id,
         fecha: new Date().toISOString(),
@@ -110,12 +118,14 @@ export const guardarFacturaConHistorial = async (
       subtotal: p.subtotal,
     }));
 
-    const { error: itemsError } = await supabase.from('items_factura').insert(items);
+    const { error: itemsError } = await supabase
+      .from("items_factura")
+      .insert(items);
     if (itemsError) throw itemsError;
 
     // 3. Insertar en `historial_facturas`
     const { error: historialError } = await supabase
-      .from('historial_facturas')
+      .from("historial_facturas")
       .insert({
         factura_id: nuevaFacturaId,
         cliente_id: cliente.id,
@@ -131,3 +141,4 @@ export const guardarFacturaConHistorial = async (
     return false;
   }
 };
+

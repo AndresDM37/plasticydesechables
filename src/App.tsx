@@ -1,4 +1,4 @@
-import { Route,Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import ListaProductos from "./pages/ListaProductos";
 import NuevaFactura from "./pages/NuevaFactura";
@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import RecuperarContraseña from "./pages/RecuperarContraseña";
 import NuevaClave from "./pages/NuevaClave";
 import RutaProtegida from "./components/RutaProtegida";
+import ResumenHoy from "./pages/ResumenHoy";
 
 function App() {
   return (
@@ -51,6 +52,14 @@ function App() {
         }
       />
       <Route
+        path="/factura/editar/:id"
+        element={
+          <RutaProtegida>
+            <NuevaFactura />
+          </RutaProtegida>
+        }
+      />
+      <Route
         path="/ver-facturas"
         element={
           <RutaProtegida>
@@ -66,6 +75,7 @@ function App() {
           </RutaProtegida>
         }
       />
+      <Route path="/resumen-hoy" element={<ResumenHoy />} />
     </Routes>
   );
 }

@@ -531,10 +531,7 @@ function NuevaFactura() {
                     <div className="bg-gray-50 p-3 rounded-md print:bg-transparent print:p-0 border-l-2 border-gray-300 print:border-l-0">
                       <p className="text-justify">
                         A ESTA FACTURA DE VENTA APLICAN LAS NORMAS RELATIVAS A
-                        LA LETRA DE CAMBIO (ARTÍCULO 5 LEY 1231 DE 2008). CON
-                        ESTA EL COMPRADOR DECLARA HABER RECIBIDO REAL Y
-                        MATERIALMENTE LAS MERCANCÍAS O PRESTACIÓN DE SERVICIOS
-                        DESCRITOS EN ESTE TÍTULO - VALOR.
+                        LA LETRA DE CAMBIO (ARTÍCULO 5 LEY 1231 DE 2008)
                       </p>
                       <br />
                       <p className="text-justify">

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { obtenerFacturasConCliente } from "../utils/historial";
+import { obtenerFacturasConCliente, eliminarFactura } from "../utils/historial";
 import type { Factura } from "../types";
 import { Link } from "react-router-dom";
 import Layout from "./Layout";
@@ -12,26 +12,39 @@ function HistorialFacturas() {
   const [itemsPorPagina, setItemsPorPagina] = useState(10);
 
   useEffect(() => {
-    const cargar = async () => {
-      const data = await obtenerFacturasConCliente();
-      setFacturas(data);
-    };
     cargar();
   }, []);
+
+  const cargar = async () => {
+    const data = await obtenerFacturasConCliente();
+    setFacturas(data);
+  };
+
+  const eliminar = async (id: number) => {
+    if (confirm("¿Seguro que deseas eliminar esta factura?")) {
+      await eliminarFactura(id);
+
+      alert("Factura eliminada correctamente");
+      // Recargar las facturas después de eliminar
+      cargar();
+    }
+  };
 
   const facturasFiltradas = facturas.filter((factura) => {
     // Búsqueda mejorada: por ID, cliente y negocio
     const terminoBusqueda = busqueda.toLowerCase().trim();
-    const coincideBusqueda = 
-      terminoBusqueda === "" || 
+    const coincideBusqueda =
+      terminoBusqueda === "" ||
       factura.id.toString().includes(terminoBusqueda) ||
-      (factura.clientes?.cliente && factura.clientes.cliente.toLowerCase().includes(terminoBusqueda)) ||
-      (factura.clientes?.negocio && factura.clientes.negocio.toLowerCase().includes(terminoBusqueda));
+      (factura.clientes?.cliente &&
+        factura.clientes.cliente.toLowerCase().includes(terminoBusqueda)) ||
+      (factura.clientes?.negocio &&
+        factura.clientes.negocio.toLowerCase().includes(terminoBusqueda));
 
     const coincideRango =
       (!rangoFecha.desde || factura.fecha >= rangoFecha.desde) &&
       (!rangoFecha.hasta || factura.fecha <= rangoFecha.hasta);
-    
+
     return coincideBusqueda && coincideRango;
   });
 
@@ -134,7 +147,8 @@ function HistorialFacturas() {
           {busqueda && (
             <div className="mb-4">
               <p className="text-sm text-gray-600">
-                {facturasFiltradas.length} resultado{facturasFiltradas.length !== 1 ? 's' : ''} 
+                {facturasFiltradas.length} resultado
+                {facturasFiltradas.length !== 1 ? "s" : ""}
                 para "{busqueda}"
               </p>
             </div>
@@ -168,8 +182,7 @@ function HistorialFacturas() {
             ) : (
               <div className="divide-y divide-gray-200">
                 {facturasPaginadas.map((factura, index) => (
-                  <Link
-                    to={`/factura/${factura.id}`}
+                  <div
                     key={factura.id}
                     className="block hover:bg-gray-50 transition-colors duration-150"
                   >
@@ -202,7 +215,10 @@ function HistorialFacturas() {
                           </div>
 
                           {/* Información de la factura */}
-                          <div className="flex-1 min-w-0">
+                          <Link
+                            to={`/factura/${factura.id}`}
+                            className="flex-1 min-w-0"
+                          >
                             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                               <div className="flex-1 min-w-0">
                                 <div className="text-sm font-semibold text-gray-900 truncate">
@@ -210,10 +226,12 @@ function HistorialFacturas() {
                                 </div>
                                 <div className="text-sm text-gray-500 truncate">
                                   {factura.clientes?.cliente && (
-                                    <span className="block">{factura.clientes.cliente}</span>
+                                    <span className="block">
+                                      {factura.clientes.cliente}
+                                    </span>
                                   )}
                                   <span className="text-xs">
-                                    {factura.clientes?.negocio || "CAFETERIA DELICIAS CST"}
+                                    {factura.clientes?.negocio}
                                   </span>
                                 </div>
                               </div>
@@ -247,11 +265,17 @@ function HistorialFacturas() {
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          </Link>
+                          <button
+                            className="ml-4 px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded text-xs cursor-pointer"
+                            onClick={() => eliminar(factura.id)}
+                          >
+                            Eliminar
+                          </button>
                         </div>
                       </div>
                     </div>
-                  </Link>
+                  </div>
                 ))}
               </div>
             )}
@@ -279,13 +303,15 @@ function HistorialFacturas() {
               <div className="flex items-center gap-2">
                 <span className="text-sm text-gray-600">
                   {inicio + 1} -{" "}
-                  {Math.min(inicio + itemsPorPagina, facturasFiltradas.length)} de{" "}
-                  {facturasFiltradas.length}
+                  {Math.min(inicio + itemsPorPagina, facturasFiltradas.length)}{" "}
+                  de {facturasFiltradas.length}
                 </span>
 
                 <div className="flex items-center gap-1">
                   <button
-                    onClick={() => setPaginaActual(Math.max(1, paginaActual - 1))}
+                    onClick={() =>
+                      setPaginaActual(Math.max(1, paginaActual - 1))
+                    }
                     disabled={paginaActual === 1}
                     className="p-1 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
                   >

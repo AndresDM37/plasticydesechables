@@ -1,4 +1,4 @@
-import supabase  from '../services/supabaseClient';
+import supabase from "../services/supabaseClient";
 
 export const obtenerFacturasConCliente = async () => {
   const { data, error } = await supabase
@@ -17,7 +17,8 @@ export const obtenerFacturasConCliente = async () => {
 export const obtenerFacturaConDetalle = async (facturaId: number) => {
   const { data, error } = await supabase
     .from("facturas")
-    .select(`
+    .select(
+      `
       id,
       fecha,
       total,
@@ -36,7 +37,8 @@ export const obtenerFacturaConDetalle = async (facturaId: number) => {
           descripcion
         )
       )
-    `)
+    `
+    )
     .eq("id", facturaId)
     .single();
 
@@ -46,4 +48,15 @@ export const obtenerFacturaConDetalle = async (facturaId: number) => {
   }
 
   return data;
+};
+
+export const eliminarFactura = async (id: number): Promise<boolean> => {
+  const { error } = await supabase.from("facturas").delete().eq("id", id);
+
+  if (error) {
+    console.error("Error al eliminar factura:", error);
+    return false;
+  }
+
+  return true;
 };

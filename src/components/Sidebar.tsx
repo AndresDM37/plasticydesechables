@@ -36,6 +36,12 @@ function Sidebar({ isOpen, onClose }) {
       icon: "👥",
       href: "/clientes",
     },
+    {
+      id: "resumen-hoy",
+      label: "Resumen de hoy",
+      icon: "📅",
+      href: "/resumen-hoy",
+    },
   ];
 
   const handleItemClick = (itemId, href) => {
@@ -68,11 +74,13 @@ function Sidebar({ isOpen, onClose }) {
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div>
-                <img
-                  src="/assets/images/image.png"
-                  alt="icono"
-                  className="w-[200px]"
-                />
+                <a href="/">
+                  <img
+                    src="/assets/images/image.png"
+                    alt="icono"
+                    className="w-[200px]"
+                  />
+                </a>
               </div>
             </div>
             {/* Botón cerrar en móvil */}
@@ -112,21 +120,6 @@ function Sidebar({ isOpen, onClose }) {
             ))}
           </ul>
         </nav>
-
-        {/* Home Button */}
-        <div className="p-4 border-t border-orange-400">
-          <button
-            onClick={() => handleItemClick("home", "/")}
-            className={`w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-left transition-colors duration-200 ${
-              activeItem === "home"
-                ? "bg-orange-400 bg-opacity-50"
-                : "hover:bg-orange-400 hover:bg-opacity-30"
-            }`}
-          >
-            <span className="text-lg lg:text-xl">🏠</span>
-            <span className="text-xs lg:text-sm">Inicio</span>
-          </button>
-        </div>
       </div>
     </>
   );
