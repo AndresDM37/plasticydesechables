@@ -93,11 +93,13 @@ export const guardarFacturaConHistorial = async (
 ): Promise<boolean> => {
   try {
     // 1. Insertar en `facturas`
+
+    const fechaActual = new Date().toISOString();
     const { data: facturaData, error: facturaError } = await supabase
       .from("facturas")
       .insert({
         cliente_id: cliente.id,
-        fecha: new Date().toISOString(),
+        fecha: fechaActual,
         cantidad: productos.reduce((acc, p) => acc + p.cantidad, 0),
         subtotal: total,
         total: total,
@@ -130,7 +132,7 @@ export const guardarFacturaConHistorial = async (
         factura_id: nuevaFacturaId,
         cliente_id: cliente.id,
         total: total,
-        fecha: new Date().toISOString(),
+        fecha: fechaActual,
       });
 
     if (historialError) throw historialError;
@@ -141,4 +143,3 @@ export const guardarFacturaConHistorial = async (
     return false;
   }
 };
-

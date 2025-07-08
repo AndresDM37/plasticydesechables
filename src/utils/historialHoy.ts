@@ -1,20 +1,25 @@
 import supabase from "../services/supabaseClient";
 
 export const obtenerFacturasDelDia = async () => {
-  const hoy = new Date().toISOString().split("T")[0]; // Formato YYYY-MM-DD
+  const hoy = new Date();
+  const desde = new Date(hoy.setHours(0, 0, 0, 0)).toISOString();
+  const hasta = new Date(hoy.setHours(23, 59, 59, 999)).toISOString();
 
   const { data, error } = await supabase
     .from("facturas")
-    .select(`
+    .select(
+      `
       id,
       fecha,
       total,
       clientes (
-        negocio,
-        cliente
+        cliente,
+        negocio
       )
-    `)
-    .eq("fecha", hoy)
+    `
+    )
+    .gte("fecha", desde)
+    .lte("fecha", hasta)
     .order("id", { ascending: false });
 
   if (error) {

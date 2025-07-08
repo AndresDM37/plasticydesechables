@@ -12,10 +12,9 @@ function Home() {
     <Layout>
       <div className="flex items-center justify-center h-full bg-white px-4">
         <div className="text-center max-w-4xl mx-auto">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light text-gray-800 mb-4 leading-tight">
-            BIENVENIDO{" "}
-            <span className="text-orange-500 font-normal block sm:inline mt-2 sm:mt-0">
-              {nombre.toUpperCase()}
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light mb-4 leading-tight">
+            <span className="text-gray-800 font-normal block sm:inline mt-2 sm:mt-0">
+              OP PLÁSTICOS Y DESECHABLES
             </span>
           </h1>
         </div>

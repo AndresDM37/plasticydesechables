@@ -30,6 +30,11 @@ function NuevaFactura() {
     useState(false);
   const productoInputRef = useRef<HTMLInputElement>(null);
 
+  // Referencias para el scroll
+  const finTablaRef = useRef<HTMLDivElement>(null);
+  const ultimaFilaRef = useRef<HTMLTableRowElement>(null);
+  const [toastVisible, setToastVisible] = useState(false);
+
   useEffect(() => {
     obtenerNumeroFactura().then(setNumeroFactura);
   }, []);
@@ -83,6 +88,36 @@ function NuevaFactura() {
     }
   };
 
+  // Función para manejar el scroll después de agregar un producto
+  const manejarScrollDespuesDeAgregar = () => {
+    // Primero scroll al último producto agregado
+    setTimeout(() => {
+      if (ultimaFilaRef.current) {
+        ultimaFilaRef.current.scrollIntoView({ 
+          behavior: "smooth", 
+          block: "center" 
+        });
+      }
+    }, 100);
+
+    // Mostrar toast y después de 3 segundos hacer scroll al input
+    setTimeout(() => {
+      setToastVisible(true);
+      
+      // Después de 3 segundos, ocultar toast y hacer scroll al input
+      setTimeout(() => {
+        setToastVisible(false);
+        if (productoInputRef.current) {
+          productoInputRef.current.focus();
+          productoInputRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
+      }, 5000);
+    }, 1000);
+  };
+
   // Función para agregar producto seleccionado
   const agregarProductoSeleccionado = (producto: any) => {
     const item: ProductoFactura = {
@@ -99,13 +134,8 @@ function NuevaFactura() {
     setMostrarSugerenciasProducto(false);
     setProductosSugeridos([]);
 
-    setTimeout(() => {
-      productoInputRef.current?.focus();
-      productoInputRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }, 100);
+    // Manejar el scroll después de agregar
+    manejarScrollDespuesDeAgregar();
   };
 
   const handleBuscarCliente = async () => {
@@ -129,13 +159,8 @@ function NuevaFactura() {
       setCodigoProducto("");
       setMostrarSugerenciasProducto(false);
 
-      setTimeout(() => {
-        productoInputRef.current?.focus();
-        productoInputRef.current?.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-      }, 100);
+      // Manejar el scroll después de agregar
+      manejarScrollDespuesDeAgregar();
     }
   };
 
@@ -198,6 +223,18 @@ function NuevaFactura() {
 
   return (
     <Layout>
+      {toastVisible && (
+        <div className="fixed top-5 right-5 z-50 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg animate-pulse">
+          <div className="flex items-center space-x-2">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            <span className="text-sm font-medium">
+              ✅ Producto agregado. Regresando al formulario...
+            </span>
+          </div>
+        </div>
+      )}
       <div className="min-h-screen bg-gray-50 p-4 lg:p-8">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
@@ -402,6 +439,7 @@ function NuevaFactura() {
                     {productos.map((prod, i) => (
                       <tr
                         key={i}
+                        ref={i === productos.length - 1 ? ultimaFilaRef : null}
                         className="border-b border-gray-200 hover:bg-gray-50"
                       >
                         <td className="px-3 py-3 text-sm">{prod.id}</td>
@@ -517,6 +555,11 @@ function NuevaFactura() {
                       </tr>
                     )}
                   </tbody>
+                  <tr>
+                    <td colSpan={6}>
+                      <div ref={finTablaRef}></div>
+                    </td>
+                  </tr>
                 </table>
               </div>
 

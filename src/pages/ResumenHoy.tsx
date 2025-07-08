@@ -183,9 +183,6 @@ function ResumenHoy() {
                       <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Total
                       </th>
-                      <th className="px-4 lg:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Hora
-                      </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
@@ -215,8 +212,7 @@ function ResumenHoy() {
                         </td>
                         <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
                           <div className="text-sm text-gray-900">
-                            {factura.clientes?.negocio ||
-                              "CAFETERIA DELICIAS CST"}
+                            {factura.clientes?.negocio}
                           </div>
                         </td>
                         <td className="px-4 lg:px-6 py-4 whitespace-nowrap">
@@ -224,17 +220,7 @@ function ResumenHoy() {
                             ${factura.total.toLocaleString("es-CO")}
                           </div>
                         </td>
-                        <td className="px-4 lg:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {factura.fecha
-                            ? new Date(factura.fecha).toLocaleTimeString(
-                                "es-CO",
-                                {
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                }
-                              )
-                            : "N/A"}
-                        </td>
+                        
                       </tr>
                     ))}
                   </tbody>
