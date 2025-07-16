@@ -93,9 +93,9 @@ function NuevaFactura() {
     // Primero scroll al último producto agregado
     setTimeout(() => {
       if (ultimaFilaRef.current) {
-        ultimaFilaRef.current.scrollIntoView({ 
-          behavior: "smooth", 
-          block: "center" 
+        ultimaFilaRef.current.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
         });
       }
     }, 100);
@@ -103,7 +103,7 @@ function NuevaFactura() {
     // Mostrar toast y después de 3 segundos hacer scroll al input
     setTimeout(() => {
       setToastVisible(true);
-      
+
       // Después de 3 segundos, ocultar toast y hacer scroll al input
       setTimeout(() => {
         setToastVisible(false);
@@ -165,6 +165,11 @@ function NuevaFactura() {
   };
 
   const actualizarCantidad = (index: number, nuevaCantidad: number) => {
+    if (nuevaCantidad <= 0) {
+      alert("La cantidad debe ser mayor que cero");
+      return;
+    }
+    
     const copia = [...productos];
     copia[index].cantidad = nuevaCantidad;
     copia[index].subtotal = nuevaCantidad * copia[index].precio;
@@ -226,8 +231,18 @@ function NuevaFactura() {
       {toastVisible && (
         <div className="fixed top-5 right-5 z-50 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg animate-pulse">
           <div className="flex items-center space-x-2">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            <svg
+              className="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+              />
             </svg>
             <span className="text-sm font-medium">
               ✅ Producto agregado. Regresando al formulario...
@@ -446,10 +461,11 @@ function NuevaFactura() {
                         <td className="px-3 py-3">
                           <input
                             type="number"
-                            min="1"
+                            min="0.01"
+                            step="0.01"
                             value={prod.cantidad}
                             onChange={(e) =>
-                              actualizarCantidad(i, parseInt(e.target.value))
+                              actualizarCantidad(i, parseFloat(e.target.value))
                             }
                             className="w-16 px-2 py-1 border border-gray-300 rounded text-center focus:outline-none focus:ring-2 focus:ring-orange-500"
                           />

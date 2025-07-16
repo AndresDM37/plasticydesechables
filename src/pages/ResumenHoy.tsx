@@ -220,7 +220,6 @@ function ResumenHoy() {
                             ${factura.total.toLocaleString("es-CO")}
                           </div>
                         </td>
-                        
                       </tr>
                     ))}
                   </tbody>

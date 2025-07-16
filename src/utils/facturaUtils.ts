@@ -1,6 +1,15 @@
 import supabase from "../services/supabaseClient";
 import type { Cliente, ProductoFactura } from "../types/index";
 
+const obtenerFechaColombia = () => {
+  const now = new Date();
+  const offsetColombia = -5 * 60; // minutos
+  const localDate = new Date(
+    now.getTime() - now.getTimezoneOffset() * 60000 + offsetColombia * 60000
+  );
+  return localDate.toISOString().slice(0, 19); // formato compatible con Supabase sin Z
+};
+
 export const obtenerNumeroFactura = async (): Promise<string> => {
   const { data, error } = await supabase
     .from("facturas")
@@ -94,7 +103,7 @@ export const guardarFacturaConHistorial = async (
   try {
     // 1. Insertar en `facturas`
 
-    const fechaActual = new Date().toISOString();
+    const fechaActual = obtenerFechaColombia();
     const { data: facturaData, error: facturaError } = await supabase
       .from("facturas")
       .insert({
@@ -142,4 +151,118 @@ export const guardarFacturaConHistorial = async (
     console.error("Error al guardar factura:", error);
     return false;
   }
+};
+
+// Agregar estas funciones a tu archivo facturaUtils.ts
+
+export const actualizarFacturaConHistorial = async (
+  facturaId: number,
+  cliente: Cliente,
+  productos: ProductoFactura[],
+  total: number
+): Promise<boolean> => {
+  try {
+    const fechaActual = obtenerFechaColombia();
+
+    // 1. Actualizar la factura principal
+    const { error: facturaError } = await supabase
+      .from("facturas")
+      .update({
+        cliente_id: cliente.id,
+        fecha: fechaActual,
+        cantidad: productos.reduce((acc, p) => acc + p.cantidad, 0),
+        subtotal: total,
+        total: total,
+      })
+      .eq("id", facturaId);
+
+    if (facturaError) throw facturaError;
+
+    // 2. Eliminar items existentes
+    const { error: deleteItemsError } = await supabase
+      .from("items_factura")
+      .delete()
+      .eq("factura_id", facturaId);
+
+    if (deleteItemsError) throw deleteItemsError;
+
+    // 3. Insertar nuevos items
+    const items = productos.map((p) => {
+      console.log("Producto para guardar:", p);
+      return {
+        factura_id: facturaId,
+        producto_id: p.id,
+        cantidad: p.cantidad,
+        precio_unitario: p.precio,
+        subtotal: p.subtotal,
+      };
+    });
+
+    const { error: itemsError } = await supabase
+      .from("items_factura")
+      .insert(items);
+    if (itemsError) throw itemsError;
+
+    // 4. Actualizar historial
+    const { error: historialError } = await supabase
+      .from("historial_facturas")
+      .update({
+        cliente_id: cliente.id,
+        total: total,
+        fecha: fechaActual,
+      })
+      .eq("factura_id", facturaId);
+
+    if (historialError) throw historialError;
+
+    return true;
+  } catch (error) {
+    console.error("Error al actualizar factura:", error);
+    return false;
+  }
+};
+
+// Función para convertir datos de detalle a formato editable
+export const convertirDetalleAEditable = (detalle: any) => {
+  const cliente: Cliente = {
+    id: detalle.clientes.id,
+    cliente: detalle.clientes.cliente,
+    negocio: detalle.clientes.negocio,
+    identificacion: detalle.clientes.identificacion,
+    direccion: detalle.clientes.direccion,
+    telefono: detalle.clientes.telefono,
+  };
+
+  const productos: ProductoFactura[] = detalle.items_factura.map(
+    (item: any) => {
+      // Verificar si tiene la información del producto
+      if (item.productos && item.productos.descripcion) {
+        return {
+          id: item.producto_id,
+          descripcion: item.productos.descripcion,
+          precio: item.precio_unitario,
+          precio_venta1: item.productos.precio_venta1 || item.precio_unitario,
+          precio_venta2: item.productos.precio_venta2 || item.precio_unitario,
+          cantidad: item.cantidad,
+          subtotal: item.subtotal,
+        };
+      } else {
+        // Si no tiene la información del producto, usar valores por defecto
+        console.warn(
+          `Producto ${item.producto_id} no tiene descripción completa`
+        );
+        return {
+          id: item.producto_id,
+          descripcion: `Producto ${item.producto_id}`,
+          precio: item.precio_unitario,
+          precio_venta1: item.precio_unitario,
+          precio_venta2: item.precio_unitario,
+          cantidad: item.cantidad,
+          subtotal: item.subtotal,
+        };
+      }
+    }
+  );
+
+  return { cliente, productos };
 };

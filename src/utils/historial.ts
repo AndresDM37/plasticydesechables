@@ -19,25 +19,13 @@ export const obtenerFacturaConDetalle = async (facturaId: number) => {
     .from("facturas")
     .select(
       `
-      id,
-      fecha,
-      total,
-      clientes (
-        cliente,
-        negocio,
-        identificacion,
-        direccion,
-        telefono
-      ),
-      items_factura (
-        cantidad,
-        precio_unitario,
-        subtotal,
-        productos (
-          descripcion
-        )
-      )
-    `
+    *,
+    clientes (*),
+    items_factura (
+      *,
+      productos (*)
+    )
+  `
     )
     .eq("id", facturaId)
     .single();
