@@ -17,6 +17,7 @@ function NuevaFactura() {
   const [productos, setProductos] = useState<ProductoFactura[]>([]);
   const [codigoProducto, setCodigoProducto] = useState("");
   const [total, setTotal] = useState(0);
+  const [observaciones, setObservaciones] = useState("");
 
   // Estados para autocompletado de clientes
   const [clientesSugeridos, setClientesSugeridos] = useState<Cliente[]>([]);
@@ -114,8 +115,8 @@ function NuevaFactura() {
             block: "center",
           });
         }
-      }, 5000);
-    }, 1000);
+      }, 8000);
+    }, 3000);
   };
 
   // Función para agregar producto seleccionado
@@ -169,7 +170,7 @@ function NuevaFactura() {
       alert("La cantidad debe ser mayor que cero");
       return;
     }
-    
+
     const copia = [...productos];
     copia[index].cantidad = nuevaCantidad;
     copia[index].subtotal = nuevaCantidad * copia[index].precio;
@@ -188,7 +189,7 @@ function NuevaFactura() {
       return;
     }
 
-    const exito = await guardarFacturaConHistorial(cliente, productos, total);
+    const exito = await guardarFacturaConHistorial(cliente, productos, total, observaciones);
 
     if (exito) {
       alert("Factura guardada correctamente ✅");
@@ -577,6 +578,23 @@ function NuevaFactura() {
                     </td>
                   </tr>
                 </table>
+              </div>
+
+              <div className="mt-6">
+                <label
+                  htmlFor="observaciones"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Observaciones / Notas de la factura:
+                </label>
+                <textarea
+                  id="observaciones"
+                  value={observaciones}
+                  onChange={(e) => setObservaciones(e.target.value)}
+                  rows={3}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm"
+                  placeholder="Escribe aquí alguna observación especial para esta factura..."
+                />
               </div>
 
               {/* Términos y Total */}

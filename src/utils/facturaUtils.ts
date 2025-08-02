@@ -98,7 +98,8 @@ export const buscarProductos = async (texto: string) => {
 export const guardarFacturaConHistorial = async (
   cliente: Cliente,
   productos: ProductoFactura[],
-  total: number
+  total: number,
+  observaciones: string
 ): Promise<boolean> => {
   try {
     // 1. Insertar en `facturas`
@@ -112,6 +113,7 @@ export const guardarFacturaConHistorial = async (
         cantidad: productos.reduce((acc, p) => acc + p.cantidad, 0),
         subtotal: total,
         total: total,
+        observaciones,
       })
       .select()
       .single();
@@ -142,6 +144,7 @@ export const guardarFacturaConHistorial = async (
         cliente_id: cliente.id,
         total: total,
         fecha: fechaActual,
+        observaciones,
       });
 
     if (historialError) throw historialError;
@@ -153,13 +156,12 @@ export const guardarFacturaConHistorial = async (
   }
 };
 
-// Agregar estas funciones a tu archivo facturaUtils.ts
-
 export const actualizarFacturaConHistorial = async (
   facturaId: number,
   cliente: Cliente,
   productos: ProductoFactura[],
-  total: number
+  total: number,
+  observaciones: string
 ): Promise<boolean> => {
   try {
     const fechaActual = obtenerFechaColombia();
@@ -173,6 +175,7 @@ export const actualizarFacturaConHistorial = async (
         cantidad: productos.reduce((acc, p) => acc + p.cantidad, 0),
         subtotal: total,
         total: total,
+        observaciones,
       })
       .eq("id", facturaId);
 
@@ -210,6 +213,7 @@ export const actualizarFacturaConHistorial = async (
         cliente_id: cliente.id,
         total: total,
         fecha: fechaActual,
+        observaciones
       })
       .eq("factura_id", facturaId);
 

@@ -227,11 +227,11 @@ function HistorialFacturas() {
                                 <div className="text-sm text-gray-500 truncate">
                                   {factura.clientes?.cliente && (
                                     <span className="block">
-                                      {factura.clientes.cliente}
+                                      {factura.clientes.negocio}
                                     </span>
                                   )}
                                   <span className="text-xs">
-                                    {factura.clientes?.negocio}
+                                    {factura.clientes?.cliente}
                                   </span>
                                 </div>
                               </div>

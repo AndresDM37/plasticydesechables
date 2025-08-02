@@ -25,6 +25,7 @@ function FacturaDetalle() {
   const [totalEdicion, setTotalEdicion] = useState(0);
   const [codigoCliente, setCodigoCliente] = useState("");
   const [codigoProducto, setCodigoProducto] = useState("");
+  const [observaciones, setObservaciones] = useState("");
 
   // Estados para autocompletado
   const [clientesSugeridos, setClientesSugeridos] = useState<Cliente[]>([]);
@@ -56,6 +57,7 @@ function FacturaDetalle() {
         setClienteEdicion(cliente);
         setProductosEdicion(productos);
         setCodigoCliente(cliente.negocio || cliente.cliente || "");
+        setObservaciones(facturaData.observaciones || "");
       }
     } catch (error) {
       console.error("Error al cargar factura:", error);
@@ -101,7 +103,8 @@ function FacturaDetalle() {
         Number(id),
         clienteEdicion,
         productosEdicion,
-        totalEdicion
+        totalEdicion,
+        observaciones
       );
 
       if (exito) {
@@ -644,6 +647,20 @@ function FacturaDetalle() {
                   </table>
                 </div>
 
+                {/* Observaciones - Edición */}
+                <div className="mb-6">
+                  <h3 className="font-semibold text-gray-800 mb-2">
+                    Observaciones:
+                  </h3>
+                  <textarea
+                    value={observaciones}
+                    onChange={(e) => setObservaciones(e.target.value)}
+                    rows={3}
+                    placeholder="Observaciones de la factura..."
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  ></textarea>
+                </div>
+
                 {/* Total - Edición */}
                 <div className="text-right">
                   <div className="bg-gray-900 text-white p-4 rounded-lg inline-block">
@@ -887,6 +904,20 @@ function FacturaDetalle() {
                         </tbody>
                       </table>
                     </div>
+                  </div>
+
+                  {/* Observaciones - Edición */}
+                  <div className="mb-6">
+                    <h3 className="font-semibold text-black mb-2 text-sm print:text-black print:text-xs print:mb-1">
+                      Observaciones:
+                    </h3>
+                    <textarea
+                      value={observaciones}
+                      onChange={(e) => setObservaciones(e.target.value)}
+                      rows={3}
+                      placeholder="Observaciones de la factura..."
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    ></textarea>
                   </div>
 
                   {/* Términos y Total - Optimizado para impresión */}
