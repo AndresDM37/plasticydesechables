@@ -906,24 +906,21 @@ function FacturaDetalle() {
                     </div>
                   </div>
 
-                  {/* Observaciones - Edición */}
                   <div className="mb-6">
                     <h3 className="font-semibold text-black mb-2 text-sm print:text-black print:text-xs print:mb-1">
                       Observaciones:
                     </h3>
-                    <textarea
-                      value={observaciones}
-                      onChange={(e) => setObservaciones(e.target.value)}
-                      rows={3}
-                      placeholder="Observaciones de la factura..."
+                    <div
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-                    ></textarea>
+                    >
+                      {factura.observaciones || "No hay observaciones"}
+                    </div>
                   </div>
 
                   {/* Términos y Total - Optimizado para impresión */}
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 print:grid-cols-2 print:gap-4 mt-6 print:mt-2">
                     {/* Términos y Condiciones */}
-                    <div className="space-y-2">
+                    <div className="space-y-2"> 
                       <h4 className="font-semibold text-black mb-2 text-sm print:text-black print:text-xs border-b border-gray-200 pb-1">
                         Términos & Condiciones
                       </h4>

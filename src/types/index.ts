@@ -38,6 +38,7 @@ export interface DetalleFactura {
   id: number;
   fecha: string;
   total: number;
+  observaciones?: string;
   clientes: {
     cliente: string;
     negocio: string;
